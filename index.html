@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    html,body {
+      height: 100%;
+      margin: 0;
+    }
+  </style>
+</head>
+<body style="height: 100%;">
+  <div id="container" style="height: 100%;"></div>
+  <script src="./js/three.js"></script>
+  <script src="./js/loader/GLTFLoader.js"></script>
+  <script>
+      const container = document.getElementById("container");
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(container.offsetWidth, container.offsetHeight);
+      container.appendChild(renderer.domElement);
+      
+      //场景
+      const  scene = new THREE.Scene();
+      //相机
+      const camera = new THREE.PerspectiveCamera(45, container.offsetWidth / container.offsetHeight, 1, 10000);
+      camera.position.set(0, 0, 100);
+      //光源
+      const directionLight = new THREE.DirectionalLight(0xffffff, 0.4);
+      scene.add(directionLight);
+
+      let donuts
+      let mixer
+
+      new THREE.GLTFLoader().load('./resources/models/donuts.glb',(gltf) => {
+        console.log(gltf)
+        scene.add(gltf.scene);
+
+        // gltf.scene.traverse((child)=>{
+        //     console.log(child.name);
+        // })
+
+        // mixer = new THREE.AnimationMixer(gltf.scene);
+        // const clips = gltf.animations; // 播放所有动画
+        // clips.forEach(function (clip) {
+        //     const action = mixer.clipAction(clip);
+        //     action.loop = THREE.LoopOnce;
+        //     // 停在最后一帧
+        //     action.clampWhenFinished = true;
+        //     action.play();
+        // });
+      })
+
+
+      animate()
+      function animate() {
+
+        renderer.render(scene, camera);
+
+        // if (donuts){
+        //   donuts.rotation.y += 0.01;
+        // }
+        requestAnimationFrame(animate);
+      }
+  </script>
+</body>
+</html>
